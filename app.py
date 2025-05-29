@@ -123,7 +123,7 @@ if st.session_state.um:
         agent_response = ""
         data = {
             "query": user_input,
-            "context": or_response,
+            "context": context,
             "history": st.session_state.messages[-5::],
         }
         full_response = requests.post(
