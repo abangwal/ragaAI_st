@@ -1,0 +1,2 @@
+streamlit
+deepgram-sdk==4.0.0
