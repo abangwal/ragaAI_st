@@ -9,10 +9,12 @@ from deepgram import (
 from io import BytesIO
 import os
 import warnings
+import json
 
 # Page configuration
 st.set_page_config(page_title="Market Brief Chat", page_icon="💬", layout="wide")
 DG_API = os.getenv("DG_API")
+
 
 # Initialize session state for chat history
 if "messages" not in st.session_state:
@@ -42,8 +44,8 @@ def STT(buffer):
     # STEP 3: Call the transcribe_file method with the text payload and options
     response = deepgram.listen.rest.v("1").transcribe_file(payload, options)
 
-    data = response.to_json()
-    warnings.warn(str(data))
+    data = json.loads(response.to_json())
+    print(data)
 
     transcript = data["results"]["channels"][0]["alternatives"][0]["transcript"]
 
