@@ -8,6 +8,7 @@ from deepgram import (
 )
 from io import BytesIO
 import os
+import warning
 
 # Page configuration
 st.set_page_config(page_title="Market Brief Chat", page_icon="💬", layout="wide")
@@ -42,6 +43,8 @@ def STT(buffer):
     response = deepgram.listen.rest.v("1").transcribe_file(payload, options)
 
     data = response.to_json()
+    warning.warn(str(data))
+
     transcript = data["results"]["channels"][0]["alternatives"][0]["transcript"]
 
     return transcript
