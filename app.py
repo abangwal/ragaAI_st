@@ -41,13 +41,16 @@ def STT(buffer):
         model="nova-3",
         smart_format=True,
     )
-    # STEP 3: Call the transcribe_file method with the text payload and options
-    response = deepgram.listen.rest.v("1").transcribe_file(payload, options)
+    try:
+        # STEP 3: Call the transcribe_file method with the text payload and options
+        response = deepgram.listen.rest.v("1").transcribe_file(payload, options)
 
-    data = json.loads(response.to_json())
-    print(data)
+        data = json.loads(response.to_json())
+        print(type(data), data.keys())
 
-    transcript = data["results"]["channels"][0]["alternatives"][0]["transcript"]
+        transcript = data["results"]["channels"][0]["alternatives"][0]["transcript"]
+    except:
+        transcript = "Error : Counldn't Transcript the audio input"
 
     return transcript
 
@@ -103,7 +106,8 @@ with audio_col:
 # Voice input button (beside text input conceptually)
 # Handle text input
 user_input = st.chat_input("Ask me about market trends...")
-st.session_state.um = user_input
+if st.session_state.um == None:
+    st.session_state.um = user_input
 if st.session_state.um:
     with c:
         with st.chat_message("user"):
@@ -123,7 +127,7 @@ if st.session_state.um:
         except:
             context = or_response.text
 
-        print(or_response)
+        print(or_response.text)
 
         agent_response = ""
         data = {
