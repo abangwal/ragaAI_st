@@ -111,14 +111,19 @@ if st.session_state.um:
         or_response = requests.post(
             url="https://ashishbangwal-ragaai.hf.space/orchestrator/orchestrator_decision",
             json=data,
-        ).json()
+        )
+
+        try:
+            context = or_response.json()["response"]
+        except:
+            context = or_response.text
 
         print(or_response)
 
         agent_response = ""
         data = {
             "query": user_input,
-            "context": or_response["response"],
+            "context": or_response,
             "history": st.session_state.messages[-5::],
         }
         full_response = requests.post(
